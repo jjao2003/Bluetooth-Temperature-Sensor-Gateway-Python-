@@ -1,0 +1,35 @@
+import socket
+import random
+import time
+
+server_address = "FC:6D:77:16:65:88"
+port = 4
+
+client = socket.socket(
+    socket.AF_BLUETOOTH,
+    socket.SOCK_STREAM,
+    socket.BTPROTO_RFCOMM
+)
+
+client.connect((server_address, port))
+
+print("Connected to Bluetooth server")
+
+try:
+    while True:
+        temperature = round(random.uniform(20.0, 30.0), 1)
+
+        message = f"Temperature: {temperature} C"
+
+        client.send(message.encode("utf-8"))
+
+        print("Sent:", message)
+
+        time.sleep(5)
+
+except OSError:
+    pass
+
+client.close()
+
+print("Disconnected from server")
